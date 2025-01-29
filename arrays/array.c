@@ -1,3 +1,5 @@
+// Array operations (add, remove, index of, sort)
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -9,7 +11,6 @@ void mergeSort(int arr[], int left, int right);
 void printArray(int arr[], int size);
 int main()
 {
-    // address of the block created hold by this pointer
     int i;
     int *ptr;
     int size = 5;
