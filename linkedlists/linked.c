@@ -14,8 +14,8 @@ struct linkedList
 };
 
 void addToLinked(struct linkedList *list, struct node *node);
+void removeElement(struct linkedList *list, int number);
 void printList(struct linkedList *list);
-// linked list must have -> data + *next, does it need *previous?
 
 int main()
 {
@@ -45,6 +45,14 @@ int main()
     printf("\n");
     printList(&list);
 
+    // Remove element
+    removeElement(&list, 12);
+
+    printf("\n");
+    printf("print list");
+    printf("\n");
+    printList(&list);
+
     free(newNode);
     free(headNode);
     return 0;
@@ -68,6 +76,29 @@ void addToLinked(struct linkedList *list, struct node *node)
     current->next = node;
 }
 
+void removeElement(struct linkedList *list, int number)
+{
+    struct node *current = list->head;
+    struct node *last = list->head;
+
+    if (current == NULL)
+    {
+        return;
+    }
+
+    while (current->data != 0)
+    {
+        if (current->data == number)
+        {
+            last->next = current->next;
+            return;
+        }
+        last = current;
+        current = current->next;
+    }
+    return;
+}
+
 // print list
 void printList(struct linkedList *list)
 {
@@ -83,6 +114,8 @@ void printList(struct linkedList *list)
     while (current != NULL)
     {
         printf("%d ", current->data);
+        printf("%p ", current);
+
         current = current->next;
     }
     printf("\n");
