@@ -21,16 +21,10 @@ void swap(int *a, int *b)
     *b = temp;
 }
 
-// heapify
 void heapifyUp(struct Heap *heap, int index);   // used to fix the heap property - after insert
 void heapifyDown(struct Heap *heap, int index); // after delete
-
-// Basic operations
 void insert(struct Heap *heap, int value);
 int extractMax(struct Heap *heap);
-int peek(struct Heap *heap);
-
-// Build heap
 void buildHeap(struct Heap *heap, int array[], int n);
 void printHeap(struct Heap *heap);
 
@@ -39,16 +33,22 @@ int main()
     struct Heap heap;
     heap.size = 0;
 
+    int array[] = {5, 3, 8, 1, 9};
+    int n = sizeof(array) / sizeof(array[0]);
+    buildHeap(&heap, array, n);
+    printHeap(&heap);
+
     insert(&heap, 10);
     insert(&heap, 20);
     insert(&heap, 15);
     insert(&heap, 30);
     printHeap(&heap);
 
+    extractMax(&heap);
+    printHeap(&heap);
     return 0;
 }
 
-// Print heap (for debugging)
 void printHeap(struct Heap *heap)
 {
     printf("Heap: ");
@@ -105,5 +105,46 @@ void heapifyDown(struct Heap *heap, int index)
     {
         swap(&heap->arr[index], &heap->arr[maxIndex]);
         heapifyDown(heap, maxIndex);
+    }
+}
+
+// remove root
+int extractMax(struct Heap *heap)
+{
+    if (heap->size <= 0)
+    {
+        printf("empty \n");
+        return -1;
+    }
+
+    int max = heap->arr[0];
+
+    // replace the root with the last element
+    heap->arr[0] = heap->arr[heap->size - 1];
+    heap->size--;
+
+    heapifyDown(heap, 0);
+    return max;
+}
+
+void buildHeap(struct Heap *heap, int array[], int n)
+{
+    if (n > 100)
+    {
+        printf("bigger than heap size \n");
+        return;
+    }
+
+    // copy the array into the heap
+    for (int i = 0; i < n; i++)
+    {
+        heap->arr[i] = array[i];
+    }
+    heap->size = n;
+
+    // heapify all non-leaf nodes
+    for (int i = (n / 2) - 1; i >= 0; i--)
+    {
+        heapifyDown(heap, i);
     }
 }
